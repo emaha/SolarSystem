@@ -9,7 +9,7 @@ namespace Solar
     public class ObjectManager
     {
         private List<SpaceObject> objects = new List<SpaceObject>();
-        private double G = 6.67E+2;
+        private double G = 6.67;
 
         public void Add(SpaceObject obj)
         {

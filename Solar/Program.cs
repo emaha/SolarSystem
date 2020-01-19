@@ -7,8 +7,8 @@ namespace Solar
 {
     internal class Program
     {
-        public static Vector2f Offset = new Vector2f(0, 0);
-        public static float Scale = 5f;// 200f;
+        public static Vector2f Offset = new Vector2f(-600, -400);
+        public static float Scale = 8000f;
         private static readonly Time UPS = Time.FromSeconds(1 / 60f);
         private static bool isExit = false;
         private static Clock clock = new Clock();
@@ -25,10 +25,10 @@ namespace Solar
 
             SpaceObject Sun = new SpaceObject()
             {
-                Mass = 100000f,//1980100, // E+21
-                Velocity = new Vector2f(0, 1.50f),
-                Position = new Vector2f(-1202500, 0),
-                Radius = 30f,//1392f / 2,
+                Mass = 1_989_100_000f,
+                Velocity = new Vector2f(0, 0),
+                Position = new Vector2f(-150_000_000f, 0),
+                Radius = 1_392_000f,
 
                 Color = Color.Red
             };
@@ -36,10 +36,10 @@ namespace Solar
 
             SpaceObject Earth = new SpaceObject()
             {
-                Mass = 2f, //5973.6,
-                Velocity = new Vector2f(0, 10000000000f),//30км/с  //107218км/ч
+                Mass = 5973.6f,
+                Velocity = new Vector2f(0, 10800f),
                 Position = new Vector2f(0, 0),
-                Radius = 12.742f,
+                Radius = 12742f,
 
                 Color = Color.Blue
             };
@@ -47,30 +47,29 @@ namespace Solar
 
             SpaceObject Moon = new SpaceObject()
             {
-                Mass = 0.5f, //73.5, // E+22 компенсируем G
-                Velocity = Earth.Velocity + new Vector2f(1.5f, 1.022f),
-                Position = new Vector2f(384.403f, 0),
-                Radius = 3.472f,
+                Mass = 73.5f,
+                Velocity = Earth.Velocity + new Vector2f(0, 1.02f),
+                Position = new Vector2f(300_000f, 0),
+                Radius = 3472f,
                 Color = Color.White
             };
             Moon.Init();
 
-            Random r = new Random();
+            //Random r = new Random();
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    SpaceObject sp = new SpaceObject()
+            //    {
+            //        Position = new Vector2f(r.Next(500) - 250f, r.Next(500) - 250f),
 
-            for (int i = 0; i < 100; i++)
-            {
-                SpaceObject sp = new SpaceObject()
-                {
-                    Position = new Vector2f(r.Next(500) - 250f, r.Next(500) - 250f),
-
-                    Radius = r.Next(20) + 10,
-                    Color = Color.Cyan,
-                    Velocity = new Vector2f(r.Next(2) - 1f, r.Next(2) - 1f),
-                    Mass = r.Next(200) + 150f
-                };
-                sp.Init();
-                manager.Add(sp);
-            }
+            //        Radius = r.Next(20) + 10,
+            //        Color = Color.Cyan,
+            //        Velocity = new Vector2f(r.Next(2) - 1f, r.Next(2) - 1f),
+            //        Mass = r.Next(200) + 150f
+            //    };
+            //    sp.Init();
+            //    manager.Add(sp);
+            //}
 
             //SpaceObject Mars = new SpaceObject()
             //{
@@ -82,19 +81,9 @@ namespace Solar
             //};
             //Mars.Init();
 
-            //SpaceObject Mars1 = new SpaceObject()
-            //{
-            //    Mass = 3973.6f,
-            //    Velocity = new Vector2f(0.0f, -1.022f),
-            //    Position = new Vector2f(550403, 150000),
-            //    Radius = 6,
-            //    Color = Color.Cyan
-            //};
-            //Mars1.Init();
-
+            manager.Add(Sun);
             manager.Add(Earth);
             manager.Add(Moon);
-            manager.Add(Sun);
             //manager.Add(Mars);
             //manager.Add(Mars1);
 
@@ -107,9 +96,11 @@ namespace Solar
                 {
                     accum -= UPS;
                     HandleKeyboard();
-                    //Offset = Earth.Position / Scale - new Vector2f(600, 400);
+
+                    Offset = Earth.Position /Scale - new Vector2f(600, 400); 
                     manager.Update();
-                    //Console.WriteLine(Earth.Position + " " + Offset);
+
+                    window.SetTitle($"{Earth.Position.X} / {Offset.X} : {Offset.Y}");
                 }
 
                 manager.Draw(window);
